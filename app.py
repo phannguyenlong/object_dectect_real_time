@@ -3,7 +3,8 @@ from flask_mail import Mail, Message
 from camera import Camera
 
 app = Flask(__name__)
-mail= Mail(app)
+mail = Mail(app)
+frame = None # frame use for sending mail (set to global in function)
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -19,6 +20,7 @@ def index():
 
 def gen(camera):
     while True:
+        global frame
         frame = camera.get_frame()
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + bytearray(frame) + b'\r\n')
 
@@ -31,6 +33,7 @@ def video_feed():
 def send_mail() :
     msg = Message('Warning', sender = 'longtestmailserver@gmail.com', recipients = ['phannguyenlong0812@gmail.com'])
     msg.body = "There is some imposter access your store without mask"
+    msg.attach("image.jpg", "image/jpeg", bytearray(frame))
     mail.send(msg)
     return "Sent"
 
