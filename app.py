@@ -1,6 +1,7 @@
 from flask import Flask, render_template, Response
 from flask_mail import Mail, Message
 from camera import Camera
+from playsound import playsound
 
 app = Flask(__name__)
 mail = Mail(app)
@@ -35,6 +36,7 @@ def send_mail() :
     msg.body = "There is some imposter access your store without mask"
     msg.attach("image.jpg", "image/jpeg", bytearray(frame))
     mail.send(msg)
+    playsound('warning.wav')
     return "Sent"
 
 if __name__ == '__main__':
