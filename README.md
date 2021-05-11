@@ -1,1 +1,2 @@
-# object_dectect_real_time
+# Disclaimer
+This repo use for realtime subject only
