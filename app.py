@@ -1,8 +1,11 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, redirect, url_for
 from flask_mail import Mail, Message
+import requests
 from camera import Camera
 from playsound import playsound
-
+from HOG.svm import *
+from HOG import *
+import cv2
 app = Flask(__name__)
 mail = Mail(app)
 frame = None # frame use for sending mail (set to global in function)
@@ -22,8 +25,14 @@ def index():
 def gen(camera):
     while True:
         global frame
-        frame = camera.get_frame()
-        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + bytearray(frame) + b'\r\n')
+        frame1 = camera.get_rawFrame()
+        if(type(Result(frame1))!=int):
+            frame = camera.convert_frame(frame1)
+            print("Not mask")
+            break
+        else:
+            yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + bytearray(camera.convert_frame(frame1)) + b'\r\n')
+    requests.get("http://127.0.0.1:5000/send_mail");
 
 @app.route('/video_feed')
 def video_feed():
@@ -32,7 +41,7 @@ def video_feed():
 
 @app.route('/send_mail')
 def send_mail() :
-    msg = Message('Warning', sender = 'longtestmailserver@gmail.com', recipients = ['phannguyenlong0812@gmail.com'])
+    msg = Message('Warning', sender = 'longtestmailserver@gmail.com', recipients = ['lmht772000@gmail.com'])
     msg.body = "There is some imposter access your store without mask"
     msg.attach("image.jpg", "image/jpeg", bytearray(frame))
     mail.send(msg)
