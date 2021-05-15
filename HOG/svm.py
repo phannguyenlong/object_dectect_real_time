@@ -51,6 +51,7 @@ def Result(frame):
     result = 1
     if (type(face) == int):
         print("Not finding face")
+        return 1
     else:
         feature = HOG.HOG1.Hog1(detectFace(frame))
         result = clf.predict([feature])
@@ -59,7 +60,7 @@ def Result(frame):
         if result == -1:
             return frame
         else:
-            return 0
+            return 2
 
 
 #vs = VideoStream(src=0,resolution=(360,480)).start()
