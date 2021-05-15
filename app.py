@@ -41,7 +41,7 @@ def video_feed():
 
 @app.route('/send_mail')
 def send_mail() :
-    msg = Message('Warning', sender = 'longtestmailserver@gmail.com', recipients = ['lmht772000@gmail.com'])
+    msg = Message('Warning', sender = 'longtestmailserver@gmail.com', recipients = ['phannguyenlong0812@gmail.com'])
     msg.body = "There is some imposter access your store without mask"
     msg.attach("image.jpg", "image/jpeg", bytearray(frame))
     mail.send(msg)
