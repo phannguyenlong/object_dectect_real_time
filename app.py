@@ -33,6 +33,7 @@ def gen(camera):
         else:
             yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + bytearray(camera.convert_frame(frame1)) + b'\r\n')
     requests.get("http://127.0.0.1:5000/send_mail");
+    playsound('warning.wav')
 
 @app.route('/video_feed')
 def video_feed():
@@ -45,7 +46,6 @@ def send_mail() :
     msg.body = "There is some imposter access your store without mask"
     msg.attach("image.jpg", "image/jpeg", bytearray(frame))
     mail.send(msg)
-    playsound('warning.wav')
     return "Sent"
 
 if __name__ == '__main__':
