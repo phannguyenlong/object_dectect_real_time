@@ -7,7 +7,7 @@ from sklearn import svm
 import joblib
 import time
 from HOG.Facenet import detectFace
-#
+# train data
 # class_img= ["Correct","Wrong"]
 # y=[]
 # features_arr = np.empty(shape=[0,3780],dtype=float)
